@@ -1,14 +1,26 @@
-import { createStore } from 'vuex'
+import { createStore } from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 
-export default createStore({
+const store = createStore({
   state: {
-  },
-  getters: {
+    selectedProduct: null,
   },
   mutations: {
+    SET_SELECTED_PRODUCT(state, product) {
+      state.selectedProduct = product;
+    },
   },
   actions: {
+    selectProduct({ commit }, product) {
+      commit('SET_SELECTED_PRODUCT', product);
+    },
   },
-  modules: {
-  }
-})
+  getters: {
+    selectedProduct(state) {
+      return state.selectedProduct;
+    },
+  },
+  plugins: [createPersistedState()],
+});
+
+export default store;
