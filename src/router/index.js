@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import Homepage from '../views/Homepage.vue';
+import Cart from '../views/Cart.vue';
 import ProductDetail from '../components/ProductDetail.vue';
 
 const routes = [
@@ -12,8 +13,12 @@ const routes = [
     path: '/product/:name',
     name: 'product-detail',
     component: ProductDetail,
+  },
+  {
+    path: '/cart',
+    name: 'cart',
+    component: Cart,
   }
-
 ];
 
 const router = createRouter({
