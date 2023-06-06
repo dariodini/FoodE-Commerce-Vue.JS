@@ -7,13 +7,15 @@
         </div>
       </div>
       <div class="col-8">
-        <div class="card-body">
-          <router-link :to="`/product/${product.name}`" @click="selectProduct(product)">
-            <h5 class="card-title">
-              {{ product.name }}
-            </h5>
-          </router-link>
-          <p class="card-text card__description">{{ truncateDescription(product.description, 55) }}</p>
+        <div class="card-body h-100 d-flex flex-column justify-content-between">
+          <div class="card-body__content">
+            <router-link :to="`/product/${product.name}`" @click="selectProduct(product)">
+              <h5 class="card-title">
+                {{ product.name }}
+              </h5>
+            </router-link>
+            <p class="card-text card__description">{{ truncateDescription(product.description, 55) }}</p>
+          </div>
           <div class="d-flex align-items-center justify-content-between">
             <div class="input-group input-group-sm me-3">
               <button class="btn btn-outline-secondary" @click="decreaseQuantity(product)">-</button>

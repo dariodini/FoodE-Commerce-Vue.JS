@@ -16,7 +16,9 @@
       ...mapState(['productList']),
     },
     created() {
-      this.fetchProductList();
+      if (! this.productList){
+        this.fetchProductList();
+      }
     },
     methods: {
       ...mapActions(['fetchProductList']),

@@ -14,8 +14,9 @@
             </form>
           </li>
           <li class="nav-item">
-            <router-link to="/cart" class="nav-link">
+            <router-link to="/cart" class="nav-link pe-0">
               <i class="fas fa-shopping-cart fa-2x"></i>
+              <span class="cart-items-count" v-if="cartItems.length > 0">{{ cartItems.length }}</span>
             </router-link>
           </li>
         </ul>
@@ -26,6 +27,11 @@
 
 <script>
 export default {
+  computed: {
+    cartItems() {
+      return this.$store.getters.cartItems;
+    },
+  },
 };
 </script>
 
@@ -70,5 +76,19 @@ export default {
   }
   .fa-search::before{
     width: 20px;
+  }
+
+  .nav-link{
+    position: relative;
+  }
+  .cart-items-count{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    color: black;
+    font-weight: 700;
+    text-align: end;
   }
 </style>
