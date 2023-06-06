@@ -83,7 +83,7 @@ export default {
   }
   .cart-items-count{
     position: absolute;
-    top: 0;
+    top: -4px;
     right: 0;
     width: 20px;
     height: 20px;
