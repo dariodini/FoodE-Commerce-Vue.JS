@@ -1,19 +1,25 @@
 <template>
   <div>
-    <h1>Homepage</h1>
-    <ProductList />
+    <ProductList :products="productList"/>
   </div>
 </template>
 
 <script>
-import ProductList from '../components/ProductList';
+  import ProductList from '../components/ProductList';
+  import { mapState, mapActions } from 'vuex';
 
-export default {
-  components: {
-    ProductList,
-  },
-};
+  export default {
+    components: {
+      ProductList,
+    },
+    computed: {
+      ...mapState(['productList']),
+    },
+    created() {
+      this.fetchProductList();
+    },
+    methods: {
+      ...mapActions(['fetchProductList']),
+    },
+  };
 </script>
-
-<style scoped>
-</style>
