@@ -19,6 +19,7 @@
 </template>
 
 <script>
+  import { formatPrice } from '../utils';
   import { mapActions } from 'vuex';
   export default {
     data() {
@@ -31,18 +32,7 @@
     },
     methods: {
       ...mapActions(['selectProduct']),
-      async fetchProducts() {
-        try {
-          const response = await fetch('https://ott-fogliata.github.io/vuejs-s2i-repository/cultured-meat.json');
-          const data = await response.json();
-          this.products = data;
-        } catch (error) {
-          console.error('Errore durante la richiesta dei prodotti:', error);
-        }
-      },
-      formatPrice(price) {
-        return price.toFixed(2);
-      },
+      formatPrice,
     },
   };
 </script>
