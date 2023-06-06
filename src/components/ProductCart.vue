@@ -19,7 +19,7 @@
           <div class="d-flex align-items-center justify-content-between">
             <div class="input-group input-group-sm me-3">
               <button class="btn btn-outline-secondary" @click="decreaseQuantity(product)">-</button>
-              <input type="number" v-model.number="product.quantity" class="form-control text-center" min="1" max="10">
+              <input type="number" v-model.number="product.quantity" class="form-control text-center" min="1" max="10" disabled readonly>
               <button class="btn btn-outline-secondary" @click="increaseQuantity(product)">+</button>
             </div>
             <span>{{ totalPrice }}€</span>

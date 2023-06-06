@@ -17,13 +17,15 @@
               <div class="input-group-append">
                 <button class="btn btn-outline-secondary rounded-0 rounded-start" @click="decreaseQuantity">-</button>
               </div>
-              <input type="number" id="quantity" v-model="quantity" class="form-control text-center" min="1" max="10">
+              <input type="number" id="quantity" v-model="quantity" class="form-control text-center" min="1" max="10" disabled readonly>
               <div class="input-group-append">
                 <button class="btn btn-outline-secondary rounded-0 rounded-end" @click="increaseQuantity">+</button>
               </div>
             </div>
-            <button @click="addToCart" class="btn btn-primary w-100 mt-3">
-              Add to cart <span v-if="totalCost">({{ formatPrice(totalCost) }}€)</span>
+            <button @click="updateCart" class="btn btn-primary w-100 mt-3">
+              {{ isProductInCart ? 'Update quantity' : 'Add to cart' }}
+              <span v-if="totalCost">({{ formatPrice(totalCost) }}€)</span>
+              <span v-else>({{ formatPrice(product.price) }}€)</span>
             </button>
           </div>
         </div>
@@ -34,6 +36,7 @@
 
 <script>
   import { formatPrice } from '../utils'
+  import { mapActions } from 'vuex';
 
   export default {
     data() {
@@ -55,16 +58,27 @@
         }
         return 0;
       },
+      isProductInCart() {
+        const cartItemQuantity = this.$store.getters.getCartItemQuantity(this.product);
+        return cartItemQuantity > 0;
+      },
     },
     methods: {
       formatPrice,
-      addToCart() {
+      ...mapActions(['updateCartItemQuantity']),
+      updateCart() {
+        const cartItemQuantity = this.$store.getters.getCartItemQuantity(this.product);
+
         const item = {
           product: this.product,
           quantity: this.quantity,
         };
-        this.$store.dispatch('addToCart', item);
-        this.quantity = 1;
+
+        if(cartItemQuantity !== 0){
+          this.updateCartItemQuantity(item);
+        }else{
+          this.$store.dispatch('addToCart', item);
+        }
       },
       increaseQuantity() {
         if (this.quantity < 10) {
