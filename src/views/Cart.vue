@@ -11,7 +11,9 @@
     <button class="btn btn-lg btn-primary w-100 shadow">Total purchase <br> {{ cartTotal }}€</button>
   </div>
   <div v-else>
-    <p>Your cart is empty.</p>
+    <p class="alert alert-warning">
+      Your cart is empty.
+    </p>
   </div>
 </template>
 
