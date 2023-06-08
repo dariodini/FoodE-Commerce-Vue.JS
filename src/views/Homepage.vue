@@ -1,6 +1,11 @@
 <template>
-  <div>
-    <ProductList :products="productList"/>
+  <div v-if="productList.length > 0">
+    <ProductList :products="productList" />
+  </div>
+  <div v-else>
+    <h6 class="alert alert-primary">
+      There are no products containing what you are looking for..
+    </h6>
   </div>
 </template>
 
@@ -16,7 +21,7 @@
       ...mapState(['productList']),
     },
     created() {
-      if (! this.productList){
+      if (this.productList.length == 0){
         this.fetchProductList();
       }
     },

@@ -8,6 +8,9 @@ const routes = [
     path: '/',
     name: 'Homepage',
     component: Homepage,
+    props: (route) => ({
+      searchQuery: route.query.search || ''
+    })
   },
   {
     path: '/product/:name',

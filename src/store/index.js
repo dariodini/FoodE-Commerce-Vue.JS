@@ -6,6 +6,7 @@ const store = createStore({
     selectedProduct: null,
     cart: [],
     productList: [],
+    searchQuery: '',
   },
   mutations: {
     SET_SELECTED_PRODUCT(state, product) {
@@ -31,9 +32,12 @@ const store = createStore({
         }
       }
     },
-    setProductList(state, productList) {
+    SET_PRODUCT_LIST(state, productList) {
       state.productList = productList;
     },
+    SET_SEARCH_QUERY(state, data) {
+      state.searchQuery = data;
+    }
   },
   actions: {
     selectProduct({ commit }, product) {
@@ -57,12 +61,22 @@ const store = createStore({
         commit('UPDATE_CART_ITEM_QUANTITY', cartItem);
       }
     },
-    fetchProductList({ commit }) {
+    fetchProductList({ commit, state }) {
       fetch('https://ott-fogliata.github.io/vuejs-s2i-repository/cultured-meat.json')
         .then(response => response.json())
         .then(productList => {
-          commit('setProductList', productList);
+          if (state.searchQuery) {
+            const filteredProducts = productList.filter(product =>
+              product.name.toLowerCase().includes(state.searchQuery.toLowerCase())
+            );
+            commit('SET_PRODUCT_LIST', filteredProducts);
+          } else {
+            commit('SET_PRODUCT_LIST', productList);
+          }
         });
+    },
+    setSearchQuery({ commit }, data) {
+      commit('SET_SEARCH_QUERY', data);
     },
   },
   getters: {

@@ -7,26 +7,34 @@
           <img :src="product.image" alt="Product Image" class="card-img">
         </div>
         <div class="col-md-8">
-          <div class="card-body">
-            <h3 class="card-title">{{ product.name }}</h3>
-            <p class="card-text">{{ product.description }}</p>
-            <span class="me-3"><strong>{{ formatPrice(product.price) }}€</strong></span>
+          <div class="card-body h-100">
+            <div class="card-body__content">
+              <h3 class="card-title">{{ product.name }}</h3>
+              <p class="card-text">{{ product.description }}</p>
+              <span class="me-3"><strong>{{ formatPrice(product.price) }}€</strong></span>
 
-            <div class="input-group mt-3">
-              <label for="quantity" class="input-group-text me-3 rounded">Quantity:</label>
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary rounded-0 rounded-start" @click="decreaseQuantity">-</button>
-              </div>
-              <input type="number" id="quantity" v-model="quantity" class="form-control text-center" min="1" max="10" disabled readonly>
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary rounded-0 rounded-end" @click="increaseQuantity">+</button>
+              <div class="input-group mt-3">
+                <label for="quantity" class="input-group-text me-3 rounded">Quantity:</label>
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary rounded-0 rounded-start" @click="decreaseQuantity">-</button>
+                </div>
+                <input type="number" id="quantity" v-model="quantity" class="form-control text-center" min="1" max="10" disabled readonly>
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary rounded-0 rounded-end" @click="increaseQuantity">+</button>
+                </div>
               </div>
             </div>
-            <button @click="updateCart" class="btn btn-primary w-100 mt-3">
-              {{ isProductInCart ? 'Update quantity' : 'Add to cart' }}
-              <span v-if="totalCost">({{ formatPrice(totalCost) }}€)</span>
-              <span v-else>({{ formatPrice(product.price) }}€)</span>
-            </button>
+            <div class="card-body__actions">
+              <button v-if="quantity>0 && isQuantityChanged" @click="updateCart" class="btn btn-primary w-100 mt-3">
+                {{ isProductInCart ? 'Update quantity' : 'Add to cart' }}
+                <span v-if="totalCost">({{ formatPrice(totalCost) }}€)</span>
+                <span v-else>({{ formatPrice(product.price) }}€)</span>
+              </button>
+              <button v-else-if="quantity>0 && ! isQuantityChanged" @click="removeProduct" class="btn btn-danger w-100 mt-3">
+                Remove product
+              </button>
+            </div>
+
           </div>
         </div>
       </div>
@@ -62,6 +70,13 @@
         const cartItemQuantity = this.$store.getters.getCartItemQuantity(this.product);
         return cartItemQuantity > 0;
       },
+      isQuantityChanged(){
+        const cartItemQuantity = this.$store.getters.getCartItemQuantity(this.product);
+        if (cartItemQuantity != this.quantity ) {
+          return true;
+        }
+        return false
+      }
     },
     methods: {
       formatPrice,
@@ -90,6 +105,10 @@
           this.quantity--;
         }
       },
+      removeProduct() {
+        this.$store.dispatch('removeFromCart', this.product);
+        this.quantity = 0
+      }
     },
   };
 </script>

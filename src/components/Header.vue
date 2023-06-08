@@ -1,15 +1,17 @@
 <template>
   <nav class="navbar navbar-expand-lg sticky-top mb-3 navbar-shadow bg-white">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/">
+      <a class="navbar-brand" href="" @click="resetSearchQuery">
         <img src="../assets/vegan-food-logo-2.png" class="navbar-logo" alt="Logo" />
       </a>
-      <ul class="nav justify-content-center">
-          <li class="nav-item">
-            <form action="">
+      <ul class="nav justify-content-center flex-grow-1">
+          <li class="nav-item flex-grow-1">
+            <form @submit="searchProducts" id="searchForm">
               <div class="input-box">
-                <input type="text" class="form-control">
-                <i class="fa fa-search fa-lg"></i>
+                <input type="text" class="form-control" v-model="searchQuery" name="searchInput" placeholder="Search products..." autocomplete="off">
+                <button type="submit" class="btn" id="formSubmitBtn">
+                  <i class="fa fa-search fa-lg"></i>
+                </button>
               </div>
             </form>
           </li>
@@ -20,18 +22,42 @@
             </router-link>
           </li>
         </ul>
-
     </div>
   </nav>
 </template>
 
 <script>
+import { router } from '../router/index.js';
+import { mapActions } from 'vuex';
+
 export default {
+  data() {
+    return {
+      searchQuery: '',
+    };
+  },
   computed: {
     cartItems() {
       return this.$store.getters.cartItems;
     },
   },
+  methods: {
+    ...mapActions(['setSearchQuery', 'fetchProductList']),
+    searchProducts(event) {
+      this.setSearchQuery(this.searchQuery);
+      this.backHome(event);
+    },
+    resetSearchQuery(event){
+      this.setSearchQuery('');
+      this.searchQuery = '';
+      this.backHome(event);
+    },
+    backHome(event){
+      event.preventDefault();
+      this.fetchProductList();
+      this.$router.push('/');
+    }
+  }
 };
 </script>
 
@@ -55,10 +81,6 @@ export default {
   }
 
   .input-box i {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
     color:#71A737;
   }
 
@@ -83,12 +105,29 @@ export default {
   }
   .cart-items-count{
     position: absolute;
-    top: -4px;
-    right: 0;
-    width: 20px;
-    height: 20px;
-    color: black;
+    top: -3px;
+    right: -3px;
+    width: 23px;
+    height: 23px;
+    color: #879B7D;
     font-weight: 700;
     text-align: end;
+    text-align: center;
+
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.47);
+  }
+  #formSubmitBtn{
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  input[name="searchInput"]::placeholder{
+    opacity: .5;
   }
 </style>
