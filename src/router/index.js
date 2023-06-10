@@ -1,13 +1,13 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import Homepage from '../views/Homepage.vue';
-import Cart from '../views/Cart.vue';
-import ProductDetail from '../components/ProductDetail.vue';
+import HomepageView from '../views/HomepageView.vue';
+import CartView from '../views/CartView.vue';
+import ProductDetailView from '../views/ProductDetailView.vue';
 
 const routes = [
   {
     path: '/',
     name: 'Homepage',
-    component: Homepage,
+    component: HomepageView,
     props: (route) => ({
       searchQuery: route.query.search || ''
     })
@@ -15,12 +15,12 @@ const routes = [
   {
     path: '/product/:name',
     name: 'product-detail',
-    component: ProductDetail,
+    component: ProductDetailView,
   },
   {
     path: '/cart',
     name: 'cart',
-    component: Cart,
+    component: CartView,
   }
 ];
 
